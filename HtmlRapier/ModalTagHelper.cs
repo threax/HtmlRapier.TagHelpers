@@ -10,7 +10,7 @@ namespace HtmlRapier.TagHelpers
     {
         public ModalTagHelper()
         {
-            
+
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -19,7 +19,7 @@ namespace HtmlRapier.TagHelpers
 
             output.TagName = "div";
 
-            output.PreContent.AppendHtml(PreContent);
+            output.PreContent.AppendHtml(String.Format(PreContent, DialogClasses != null && DialogClasses != "" ? " " + DialogClasses : ""));
             if (AddHeader)
             {
                 output.PreContent.AppendHtml(String.Format(HeaderContent, modalGuid, TitleText));
@@ -37,9 +37,11 @@ namespace HtmlRapier.TagHelpers
 
         public bool AddHeader { get; set; } = true;
 
-        public String TitleText { get; set; }
+        public String TitleText { get; set; } //1
 
-        private const String PreContent = @"<div class=""modal-dialog"" role=""document"">
+        public String DialogClasses { get; set; } = ""; //PreContent - 0
+
+        private const String PreContent = @"<div class=""modal-dialog{0}"" role=""document"">
         <div class=""modal-content"">";
 
         //0 - modalGuid
