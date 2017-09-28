@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -8,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace HtmlRapier.TagHelpers
 {
@@ -31,6 +34,10 @@ namespace HtmlRapier.TagHelpers
         [ViewContext]
         public ViewContext ViewContext { get; set; }
 
+        public bool AddRunner { get; set; } = true;
+
+        public String RunnerName { get; set; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             var urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
@@ -41,7 +48,28 @@ namespace HtmlRapier.TagHelpers
             //Add the access token path in after getting its content url
             var jObj = JObject.FromObject(config);
             jObj.Add("AccessTokenPath", urlHelper.Content(config.AccessTokenPath));
-            
+
+            //Add the action path as the page base path
+            var actionInfo = ViewContext.ActionDescriptor as ControllerActionDescriptor;
+            if (actionInfo != null)
+            {
+                jObj.Add("PageBasePath", urlHelper.Action(actionInfo.ActionName, actionInfo.ControllerName));
+            }
+
+            if (AddRunner)
+            {
+                var runnerName = RunnerName;
+                if(runnerName == null)
+                {
+                    runnerName = Path.ChangeExtension(ViewContext.View.Path, null);
+                    if(runnerName[0] == '/')
+                    {
+                        runnerName = runnerName.Substring(1);
+                    }
+                }
+                output.Attributes.Add("data-hr-run", runnerName);
+            }
+
             //Convert to html this way so we don't escape the settings object.
             var html = String.Format(content, jObj.ToString());
             output.Content.SetHtmlContent(html);
