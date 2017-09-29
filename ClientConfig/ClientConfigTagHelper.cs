@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using Microsoft.AspNetCore.Routing;
+using HtmlRapier.TagHelpers.ClientConfig;
 
 namespace HtmlRapier.TagHelpers
 {
@@ -23,11 +25,13 @@ namespace HtmlRapier.TagHelpers
     {
         private IClientConfig config;
         private IUrlHelperFactory urlHelperFactory;
+        private ClientConfigTagHelperOptions options;
 
-        public ClientConfigTagHelper(IUrlHelperFactory urlHelperFactory, IClientConfig config)
+        public ClientConfigTagHelper(IUrlHelperFactory urlHelperFactory, IClientConfig config, ClientConfigTagHelperOptions options)
         {
             this.config = config;
             this.urlHelperFactory = urlHelperFactory;
+            this.options = options;
         }
 
         [HtmlAttributeNotBound]
@@ -53,7 +57,23 @@ namespace HtmlRapier.TagHelpers
             var actionInfo = ViewContext.ActionDescriptor as ControllerActionDescriptor;
             if (actionInfo != null)
             {
-                jObj.Add("PageBasePath", urlHelper.Action(actionInfo.ActionName, actionInfo.ControllerName));
+                var valueDictionary = new Dictionary<String, Object>();
+                if (options.RouteArgsToClear != null)
+                {
+                    foreach (var option in options.RouteArgsToClear)
+                    {
+                        valueDictionary.Add(option, "");
+                    }
+                }
+
+                var urlActionContext = new UrlActionContext()
+                {
+                    Action = actionInfo.ActionName,
+                    Controller = actionInfo.ControllerName,
+                    Values = valueDictionary
+                };
+
+                jObj.Add("PageBasePath", urlHelper.Action(urlActionContext));
             }
 
             if (AddRunner)
