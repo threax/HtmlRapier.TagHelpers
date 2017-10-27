@@ -16,9 +16,10 @@ namespace HtmlRapier.TagHelpers
     public interface IClientConfig
     {
         /// <summary>
-        /// The path to the access token.
+        /// This is a reserved property, it won't actually be accessed, but will be calculated and sent to the client
+        /// side as part of the object.
         /// </summary>
         [JsonIgnore]
-        String AccessTokenPath { get; }
+        String PageBasePath { get; }
     }
 }

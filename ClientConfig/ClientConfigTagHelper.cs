@@ -51,7 +51,6 @@ namespace HtmlRapier.TagHelpers
 
             //Add the access token path in after getting its content url
             var jObj = JObject.FromObject(config);
-            jObj.Add("AccessTokenPath", urlHelper.Content(config.AccessTokenPath));
 
             //Add the action path as the page base path
             var actionInfo = ViewContext.ActionDescriptor as ControllerActionDescriptor;

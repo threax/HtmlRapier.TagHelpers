@@ -10,10 +10,6 @@ namespace HtmlRapier.TagHelpers
     /// </summary>
     public abstract class ClientConfigBase : IClientConfig
     {
-
-        /// <summary>
-        /// The path to the access token, defaults to ~/AccessToken.
-        /// </summary>
-        public String AccessTokenPath { get; set; } = "~/AccessToken";
+        public String PageBasePath => null;
     }
 }
