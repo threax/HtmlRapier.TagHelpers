@@ -95,6 +95,13 @@ namespace HtmlRapier.TagHelpers
         }
 
         //0 - json
-        private const String content = "window.clientConfig = {0};";
+        private const String content =
+@"window.hr_config = (function(next){{
+    return function(config)
+    {{
+        config.client = {0};
+        return next ? next(config) : config;
+    }}
+}})(window.hr_config);";
     }
 }
