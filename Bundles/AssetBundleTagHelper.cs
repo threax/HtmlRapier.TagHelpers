@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Internal;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,12 +26,15 @@ namespace HtmlRapier.TagHelpers
         private ViewContext viewContext;
         private IUrlHelper urlHelper;
         private AssetBundleOptions options;
+        private FileVersionProvider fileVersionProvider;
+        private IMemoryCache cache;
 
-        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IHostingEnvironment hostingEnvironment, AssetBundleOptions options)
+        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IHostingEnvironment hostingEnvironment, AssetBundleOptions options, IMemoryCache cache)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.urlHelperFactory = urlHelperFactory;
             this.options = options;
+            this.cache = cache;
         }
 
         public String Src { get; set; }
@@ -53,20 +58,29 @@ namespace HtmlRapier.TagHelpers
         {
             var inputFiles = Files();
             output.TagName = null;
+            EnsureFileVersionProvider();
+            var format = cssFormat;
 
             if (Path.GetExtension(Src).Equals(".js", StringComparison.InvariantCultureIgnoreCase))
             {
-                foreach (var file in inputFiles)
-                {
-                    output.Content.AppendHtmlLine(String.Format(jsFormat, file));
-                }
+                format = jsFormat;
             }
-            else
+
+            foreach (var file in inputFiles)
             {
-                foreach (var file in inputFiles)
-                {
-                    output.Content.AppendHtmlLine(String.Format(cssFormat, file));
-                }
+                var vFile = fileVersionProvider.AddFileVersionToPath(file);
+                output.Content.AppendHtmlLine(String.Format(format, vFile));
+            }
+        }
+
+        private void EnsureFileVersionProvider()
+        {
+            if (fileVersionProvider == null)
+            {
+                fileVersionProvider = new FileVersionProvider(
+                    hostingEnvironment.WebRootFileProvider,
+                    cache,
+                    ViewContext.HttpContext.Request.PathBase);
             }
         }
 
