@@ -97,7 +97,7 @@ namespace HtmlRapier.TagHelpers
                 var bundle = GetBundle(configFile, Src);
                 if (bundle == null)
                 {
-                    yield break;
+                    throw new FileNotFoundException($"Cannot find bundle {Src} in {configFile}");
                 }
 
                 foreach (var file in bundle.InputFiles)
@@ -114,7 +114,9 @@ namespace HtmlRapier.TagHelpers
         {
             var file = new FileInfo(configFile);
             if (!file.Exists)
-                return null;
+            {
+                throw new FileNotFoundException($"Cannot find bundle bundle config file {configFile}");
+            }
 
             bundlePath = urlHelper.Content(bundlePath);
 
