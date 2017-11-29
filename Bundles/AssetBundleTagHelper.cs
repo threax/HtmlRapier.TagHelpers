@@ -69,11 +69,19 @@ namespace HtmlRapier.TagHelpers
             foreach (var file in inputFiles)
             {
                 var vFile = fileVersionProvider.AddFileVersionToPath(file);
-                var starting = vFile[0];
-                if(starting != '/' && starting != '\\')
+                var first = vFile[0];
+                if (first != '~')
                 {
-                    vFile = "/" + vFile;
+                    if (first != '/' && first != '\\')
+                    {
+                        vFile = "~/" + vFile;
+                    }
+                    else
+                    {
+                        vFile = "~" + vFile;
+                    }
                 }
+                vFile = urlHelper.Content(vFile);
                 output.Content.AppendHtmlLine(String.Format(format, vFile));
             }
         }
