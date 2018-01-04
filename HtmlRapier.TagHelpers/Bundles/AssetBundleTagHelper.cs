@@ -131,7 +131,11 @@ namespace HtmlRapier.TagHelpers
                 throw new FileNotFoundException($"Cannot find bundle bundle config file {configFile}");
             }
 
-            bundlePath = urlHelper.Content(bundlePath);
+            //Strip leading ~
+            if(bundlePath[0] == '~')
+            {
+                bundlePath = bundlePath.Substring(1);
+            }
 
             var bundles = JsonConvert.DeserializeObject<IEnumerable<Bundle>>(File.ReadAllText(configFile));
             return (from b in bundles
