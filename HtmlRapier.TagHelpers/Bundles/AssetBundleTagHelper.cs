@@ -101,7 +101,7 @@ namespace HtmlRapier.TagHelpers
         {
             if (options.UseBundles)
             {
-                yield return urlHelper.Content(Src);
+                yield return Src;
             }
             else
             {
