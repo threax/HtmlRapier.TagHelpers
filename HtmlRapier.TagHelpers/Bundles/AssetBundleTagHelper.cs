@@ -68,7 +68,7 @@ namespace HtmlRapier.TagHelpers
 
             foreach (var file in inputFiles)
             {
-                var vFile = fileVersionProvider.AddFileVersionToPath(file);
+                var vFile = file;
                 var first = vFile[0];
                 if (first != '~')
                 {
@@ -82,6 +82,7 @@ namespace HtmlRapier.TagHelpers
                     }
                 }
                 vFile = urlHelper.Content(vFile);
+                vFile = fileVersionProvider.AddFileVersionToPath(vFile);
                 output.Content.AppendHtmlLine(String.Format(format, vFile));
             }
         }
