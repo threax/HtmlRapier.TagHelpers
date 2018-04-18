@@ -46,13 +46,13 @@ namespace HtmlRapier.TagHelpers
         private const String StartContent = @"
             <div data-hr-model=""totals"">Items {{itemStart}} - {{itemEnd}} of {{total}}</div>
             <ul class=""pagination pull-left"">
-                <li data-hr-toggle=""first"" aria-label=""First"" data-hr-on-click=""pageFirst"" data-hr-class-off=""disabled"">
-                    <a href=""#First"">
+                <li data-hr-toggle=""first"" data-hr-on-click=""pageFirst"" data-hr-class-off=""disabled"">
+                    <a href=""#First"" aria-label=""First"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-backward""></span>
                     </a>
                 </li>
-                <li data-hr-toggle=""previous"" aria-label=""Previous"" data-hr-on-click=""pagePrevious"" data-hr-class-off=""disabled"">
-                    <a href=""#Previous"">
+                <li data-hr-toggle=""previous"" data-hr-on-click=""pagePrevious"" data-hr-class-off=""disabled"">
+                    <a href=""#Previous"" aria-label=""Previous"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-triangle-left""></span>
                     </a>
                 </li>";
@@ -60,13 +60,13 @@ namespace HtmlRapier.TagHelpers
         private const String PageLine = @"
                 <li data-hr-toggle=""page{0}"" data-hr-model=""page{0}"" data-hr-class-active=""active"" data-hr-style-off=""display:none;"" data-hr-on-click=""page{0}""><a href=""#Page"">{{{{pageNum}}}}</a></li>";
 
-        private const String EndPageNumbers = @"<li data-hr-toggle=""next"" aria-label=""Next"" data-hr-on-click=""pageNext"" data-hr-class-off=""disabled"">
-                    <a href=""#Next"">
+        private const String EndPageNumbers = @"<li data-hr-toggle=""next"" data-hr-on-click=""pageNext"" data-hr-class-off=""disabled"">
+                    <a href=""#Next"" aria-label=""Next"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-triangle-right""></span>
                     </a>
                 </li>
-                <li data-hr-toggle=""last"" aria-label=""Last"" data-hr-on-click=""pageLast"" data-hr-class-off=""disabled"">
-                    <a href=""#Last"">
+                <li data-hr-toggle=""last"" data-hr-on-click=""pageLast"" data-hr-class-off=""disabled"">
+                    <a href=""#Last"" aria-label=""Last"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-forward""></span>
                     </a>
                 </li>
@@ -75,7 +75,7 @@ namespace HtmlRapier.TagHelpers
             <form class=""form-inline pull-left"" data-hr-model=""itemsPerPage"" data-hr-on-change=""itemsPerPageChanged"">
                 <div class=""form-group"">
                     <label for=""itemsPerPage"">Items per Page</label>
-                    <select name=""itemsPerPage"" class=""form-control"">";
+                    <select name=""itemsPerPage"" class=""form-control"" aria-label=""Items Per Page"">";
 
         private const String OptionLine = @"
                         <option value=""{0}"">{0}</option>";
