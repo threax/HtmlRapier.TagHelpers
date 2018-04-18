@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>5.1.7</Version>
+    <Version>5.2.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/HtmlRapier.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Fixed bug where file version was not appended to bundle name.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed arias in page number tag helper.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
