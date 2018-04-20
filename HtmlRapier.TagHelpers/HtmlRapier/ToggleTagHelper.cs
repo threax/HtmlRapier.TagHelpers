@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HtmlRapier.TagHelpers
@@ -48,10 +50,63 @@ namespace HtmlRapier.TagHelpers
                 output.Attributes.SetAttribute("class", context.MergeClasses(hiddenStartClass));
                 output.Attributes.SetAttribute("data-hr-style-on", onStyle);
             }
+
+            if (!String.IsNullOrWhiteSpace(AriaLiveMessage))
+            {
+                output.Attributes.SetAttribute("aria-live", "off");
+                if (AriaLiveMessageBeforeElement)
+                {
+                    CreateLiveMessage(output.PreElement);
+                }
+                else
+                {
+                    CreateLiveMessage(output.PostElement);
+                }
+            }
         }
 
+        /// <summary>
+        /// Set the name of the toggle.
+        /// </summary>
         public String HrToggle { get; set; }
 
+        /// <summary>
+        /// Set whether the toggle is visible when it starts. Defaults to false.
+        /// </summary>
         public bool Visible { get; set; } = false;
+
+        /// <summary>
+        /// Set this to a message to have that read instead of the element content if this toggle is used
+        /// in an aria-live region. This will create an extra toggle element only for screen readers with the
+        /// message in it. The aria-live attribute will be set to off for the main content.
+        /// </summary>
+        public String AriaLiveMessage { get; set; }
+
+        /// <summary>
+        /// Set the location of the AriaLiveMessage. True (default) will put the message element before
+        /// the main element and false will put it after.
+        /// </summary>
+        public bool AriaLiveMessageBeforeElement { get; set; } = true;
+
+        /// <summary>
+        /// The name of the class to use for the aria live message element. Defaults to "sr-only".
+        /// </summary>
+        public String AriaLiveMessageSrClass { get; set; } = "sr-only";
+
+        protected void CreateLiveMessage(TagHelperContent content)
+        {
+            var classes = WebUtility.HtmlEncode(AriaLiveMessageSrClass);
+            content.AppendHtml($@"<{WebUtility.HtmlEncode(tagName)} data-hr-toggle=""{WebUtility.HtmlEncode(HrToggle)}""");
+            if (Visible)
+            {
+                content.AppendHtml($@" data-hr-style-off=""display:none;""");
+            }
+            else
+            {
+                classes += " " + WebUtility.HtmlEncode(hiddenStartClass);
+                content.AppendHtml($@" data-hr-style-on=""{WebUtility.HtmlEncode(onStyle)}""");
+            }
+            content.AppendHtml($@" class=""{classes}"">{WebUtility.HtmlEncode(AriaLiveMessage)}</{WebUtility.HtmlEncode(tagName)}>");
+        }
     }
 }
