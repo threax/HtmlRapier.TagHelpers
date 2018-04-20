@@ -17,9 +17,13 @@ namespace HtmlRapier.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            output.TagName = "div";
+            output.TagName = "nav";
             output.Attributes.Add(new TagHelperAttribute("data-hr-controller", ControllerName));
             output.Attributes.SetAttribute("class", context.MergeClasses("clearfix"));
+            if (!output.Attributes.ContainsName("aria-label"))
+            {
+                output.Attributes.SetAttribute("aria-label", "pages");
+            }
             output.PreContent.AppendHtml(StartContent);
 
             for (int i = 0; i < NumPageNumbers; ++i)
@@ -47,26 +51,26 @@ namespace HtmlRapier.TagHelpers
             <div data-hr-model=""totals"">Items {{itemStart}} - {{itemEnd}} of {{total}}</div>
             <ul class=""pagination pull-left"">
                 <li data-hr-toggle=""first"" data-hr-on-click=""pageFirst"" data-hr-class-off=""disabled"">
-                    <a href=""#First"" aria-label=""First"">
+                    <a href=""#"" aria-label=""First"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-backward""></span>
                     </a>
                 </li>
                 <li data-hr-toggle=""previous"" data-hr-on-click=""pagePrevious"" data-hr-class-off=""disabled"">
-                    <a href=""#Previous"" aria-label=""Previous"">
+                    <a href=""#"" aria-label=""Previous"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-triangle-left""></span>
                     </a>
                 </li>";
 
         private const String PageLine = @"
-                <li data-hr-toggle=""page{0}"" data-hr-model=""page{0}"" data-hr-class-active=""active"" data-hr-style-off=""display:none;"" data-hr-on-click=""page{0}""><a href=""#Page"">{{{{pageNum}}}}</a></li>";
+                <li data-hr-toggle=""page{0}"" data-hr-model=""page{0}"" data-hr-class-active=""active"" data-hr-style-off=""display:none;"" data-hr-on-click=""page{0}""><a href=""#"">{{{{pageNum}}}}</a></li>";
 
         private const String EndPageNumbers = @"<li data-hr-toggle=""next"" data-hr-on-click=""pageNext"" data-hr-class-off=""disabled"">
-                    <a href=""#Next"" aria-label=""Next"">
+                    <a href=""#"" aria-label=""Next"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-triangle-right""></span>
                     </a>
                 </li>
                 <li data-hr-toggle=""last"" data-hr-on-click=""pageLast"" data-hr-class-off=""disabled"">
-                    <a href=""#Last"" aria-label=""Last"">
+                    <a href=""#"" aria-label=""Last"">
                         <span aria-hidden=""true"" class=""glyphicon glyphicon-forward""></span>
                     </a>
                 </li>
