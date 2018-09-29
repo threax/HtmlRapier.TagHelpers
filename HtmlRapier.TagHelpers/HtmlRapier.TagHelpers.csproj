@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>5.3.0</Version>
+    <Version>5.4.0-pre1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/HtmlRapier.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Added a message for screen readers to toggles. Using this will read the message instead of the main content when the toggle becomes visible.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added an attribute for client config that will expand the path if it starts with ~/ when being written.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
