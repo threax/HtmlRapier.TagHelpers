@@ -46,12 +46,12 @@ namespace HtmlRapier.TagHelpers
             <ul class=""pagination pull-left"">
                 <li class=""page-item"" data-hr-toggle=""first"" data-hr-on-click=""pageFirst"" data-hr-class-off=""disabled"">
                     <a class=""page-link"" href=""#"" aria-label=""First"">
-                        <i class=""fa fa-angle-double-left""></i>
+                        &laquo;
                     </a>
                 </li>
                 <li class=""page-item"" data-hr-toggle=""previous"" data-hr-on-click=""pagePrevious"" data-hr-class-off=""disabled"">
                     <a class=""page-link"" href=""#"" aria-label=""Previous"">
-                        <i class=""fa fa-angle-left""></i>
+                        &lsaquo;
                     </a>
                 </li>";
 
@@ -60,12 +60,12 @@ namespace HtmlRapier.TagHelpers
 
         private const String EndPageNumbers = @"<li class=""page-item"" data-hr-toggle=""next"" data-hr-on-click=""pageNext"" data-hr-class-off=""disabled"">
                     <a class=""page-link"" href=""#"" aria-label=""Next"">
-                        <i class=""fa fa-angle-right""></i>
+                        &rsaquo;
                     </a>
                 </li>
                 <li class=""page-item"" data-hr-toggle=""last"" data-hr-on-click=""pageLast"" data-hr-class-off=""disabled"">
                     <a class=""page-link"" href=""#"" aria-label=""Last"">
-                        <i class=""fa fa-angle-double-right""></i>
+                        &raquo;
                     </a>
                 </li>
             </ul>
