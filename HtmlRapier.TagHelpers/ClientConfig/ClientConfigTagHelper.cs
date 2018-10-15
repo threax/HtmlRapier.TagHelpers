@@ -1,18 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using HtmlRapier.TagHelpers.ClientConfig;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using System.IO;
-using Microsoft.AspNetCore.Routing;
-using HtmlRapier.TagHelpers.ClientConfig;
+using System.Linq;
 
 namespace HtmlRapier.TagHelpers
 {
@@ -73,6 +69,17 @@ namespace HtmlRapier.TagHelpers
                 };
 
                 jObj.Add("PageBasePath", urlHelper.Action(urlActionContext));
+            }
+
+            var request = ViewContext.HttpContext.Request;
+
+            foreach(var prop in config.GetType().GetProperties().Where(i => i.GetCustomAttributes(typeof(ExpandHostPathAttribute), true).Any()))
+            {
+                var path = jObj[prop.Name]?.ToString();
+                if (path.StartsWith("~/"))
+                {
+                    jObj[prop.Name] = $"https://{request.Host.Value}{urlHelper.Content(path)}";
+                }
             }
 
             if (AddRunner)
