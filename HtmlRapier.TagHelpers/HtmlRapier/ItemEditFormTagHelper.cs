@@ -55,15 +55,15 @@ namespace HtmlRapier.TagHelpers
         public bool DynamicAfterStatic { get; set; } = true;
 
         private const String StartContent = @"
-            <div class=""modal-body"">
+            <fieldset class=""modal-body"" data-hr-toggle=""viewOnly"" data-hr-disabled-on=""true"">
                 <div class=""alert alert-danger hiddenToggler"" role=""alert"" data-hr-toggle=""{1}"" data-hr-view=""{1}"" data-hr-style-on=""display:block;"">{{{{message}}}}</div>
 ";
 
         private const String DynamicContent = "<span data-hr-form-end></span>";
 
         private const String EndContent = @"
-            </div>
-            <div class=""modal-footer"">
+            </fieldset>
+            <div class=""modal-footer"" data-hr-toggle=""viewOnly"" data-hr-style-on=""display:none;"">
                 <button type = ""submit"" class=""btn btn-primary"">{0}</button>
             </div>";
     }
