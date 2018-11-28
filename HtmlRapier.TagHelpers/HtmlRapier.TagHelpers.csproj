@@ -10,8 +10,7 @@
     <RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/HtmlRapier.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Added support for bootstrap 4 to the tag helpers. However, you must now register the tag helpers and specify your version or you will get runtime errors.
-6.0.1 - Removed need for fontawesome.</PackageReleaseNotes>
+    <PackageReleaseNotes>Changed generated form to have toggles to create a view only version that disables the Save Changes button and the controls.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
