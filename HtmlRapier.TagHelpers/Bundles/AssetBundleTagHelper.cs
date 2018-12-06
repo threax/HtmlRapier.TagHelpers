@@ -26,15 +26,16 @@ namespace HtmlRapier.TagHelpers
         private ViewContext viewContext;
         private IUrlHelper urlHelper;
         private AssetBundleOptions options;
-        private FileVersionProvider fileVersionProvider;
+        private IFileVersionProvider fileVersionProvider;
         private IMemoryCache cache;
 
-        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IHostingEnvironment hostingEnvironment, AssetBundleOptions options, IMemoryCache cache)
+        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IHostingEnvironment hostingEnvironment, AssetBundleOptions options, IMemoryCache cache, IFileVersionProvider fileVersionProvider)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.urlHelperFactory = urlHelperFactory;
             this.options = options;
             this.cache = cache;
+            this.fileVersionProvider = fileVersionProvider;
         }
 
         public String Src { get; set; }
@@ -58,7 +59,6 @@ namespace HtmlRapier.TagHelpers
         {
             var inputFiles = Files();
             output.TagName = null;
-            EnsureFileVersionProvider();
             var format = cssFormat;
 
             if (Path.GetExtension(Src).Equals(".js", StringComparison.InvariantCultureIgnoreCase))
@@ -82,19 +82,8 @@ namespace HtmlRapier.TagHelpers
                     }
                 }
                 vFile = urlHelper.Content(vFile);
-                vFile = fileVersionProvider.AddFileVersionToPath(vFile);
+                vFile = fileVersionProvider.AddFileVersionToPath("", vFile);
                 output.Content.AppendHtmlLine(String.Format(format, vFile));
-            }
-        }
-
-        private void EnsureFileVersionProvider()
-        {
-            if (fileVersionProvider == null)
-            {
-                fileVersionProvider = new FileVersionProvider(
-                    hostingEnvironment.WebRootFileProvider,
-                    cache,
-                    ViewContext.HttpContext.Request.PathBase);
             }
         }
 
