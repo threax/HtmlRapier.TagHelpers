@@ -15,7 +15,7 @@ namespace HtmlRapier.TagHelpers
 
         }
 
-        public void Process(TagHelperContext context, TagHelperOutput output, int numPageNumbers, String itemsPerPageOptions, String controllerName)
+        public void Process(TagHelperContext context, TagHelperOutput output, int numPageNumbers, String itemsPerPageOptions, String startItemsPerPage, String controllerName)
         {
             output.TagName = "nav";
             output.Attributes.Add(new TagHelperAttribute("data-hr-controller", controllerName));
@@ -23,6 +23,10 @@ namespace HtmlRapier.TagHelpers
             if (!output.Attributes.ContainsName("aria-label"))
             {
                 output.Attributes.SetAttribute("aria-label", "pages");
+            }
+            if(startItemsPerPage != null)
+            {
+                output.Attributes.SetAttribute("data-hr-config-startitemsperpage", startItemsPerPage);
             }
             output.PreContent.AppendHtml(StartContent);
 

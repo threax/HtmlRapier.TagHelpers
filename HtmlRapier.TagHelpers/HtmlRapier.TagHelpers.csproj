@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>7.0.0</Version>
+    <Version>7.1.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/HtmlRapier.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Fixed error when running under .net core 2.2. The FileVersionProvider interface changed.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added StartItemsPerPage to the page numbers to allow the user change the default.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
