@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>7.1.0</Version>
+    <Version>8.0.0-pre01</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl>https://github.com/threax/HtmlRapier.TagHelpers/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageReleaseNotes>Added StartItemsPerPage to the page numbers to allow the user change the default.</PackageReleaseNotes>
+    <PackageReleaseNotes>Modified bootstrap 4 modal to use only classes and no inline styles to be better compatible with a csp that does not allow inline styles. The version number was bumped because the relogin modal should now be the last one on the page, since it no longer sets a z-index. This way it can still pop up over other content. Otherwise there are no breaking changes.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

@@ -21,7 +21,6 @@ namespace HtmlRapier.TagHelpers
             output.Attributes.SetAttribute("role", "dialog");
             output.Attributes.SetAttribute("data-hr-controller", "hr-relogin");
             output.Attributes.SetAttribute("data-hr-toggle", "dialog");
-            output.Attributes.SetAttribute("style", context.MergeAttribute("style", "z-index:1400", ";"));
             output.Content.AppendHtml(markup);
         }
 
@@ -33,7 +32,7 @@ namespace HtmlRapier.TagHelpers
                     <button type = ""button"" class=""close"" data-dismiss=""modal"" aria-label=""Close""><span aria-hidden=""true"">&times;</span></button>
                 </div>
                 <div class=""modal-body"">
-                    <iframe data-hr-handle=""loginFrame"" width=""100%"" style=""border:0px none""></iframe>
+                    <iframe data-hr-handle=""loginFrame"" width=""100%"" class=""border-0""></iframe>
                 </div>
                 <div class=""modal-footer"">
                     <button type = ""button"" class=""btn btn-default"" data-dismiss=""modal"">Close</button>
