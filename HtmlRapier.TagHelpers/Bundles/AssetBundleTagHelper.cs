@@ -96,24 +96,66 @@ namespace HtmlRapier.TagHelpers
             else
             {
                 var baseFolder = hostingEnvironment.ContentRootPath;
-                var configFile = Path.Combine(baseFolder, "bundleconfig.json");
-                var bundle = GetBundle(configFile, Src);
-                if (bundle == null)
+
+                //Look in artifacts.json
+                bool keepLooking = false;
+                var configFile = Path.Combine(baseFolder, options.ArtifactsJsonFileName);
+                if (File.Exists(configFile))
                 {
-                    throw new FileNotFoundException($"Cannot find bundle {Src} in {configFile}");
+                    var bundle = GetArtifactsBundle(configFile, Src);
+                    if (bundle == null)
+                    {
+                        keepLooking = true;
+                    }
+                    else
+                    {
+                        foreach (var file in bundle.Input)
+                        {
+                            yield return file.Substring(options.UnbundledFolder.Length);
+                        }
+                    }
                 }
 
-                foreach (var file in bundle.InputFiles)
+                if (keepLooking)
                 {
-                    yield return file.Substring(options.UnbundledFolder.Length);
+                    //Look in bundler minifier core
+                    keepLooking = false;
+                    configFile = Path.Combine(baseFolder, options.BundlerMinifierCoreFileName);
+                    if (File.Exists(configFile))
+                    {
+                        var bundle = GetBundlerMinifierCore(configFile, Src);
+                        if (bundle == null)
+                        {
+                            keepLooking = true;
+                        }
+                        else
+                        {
+                            foreach (var file in bundle.InputFiles)
+                            {
+                                yield return file.Substring(options.UnbundledFolder.Length);
+                            }
+                        }
+                    }
+                }
+
+                if (keepLooking)
+                {
+                    //Didn't find anything, throw exception
+                    throw new FileNotFoundException($"Cannot find bundle {Src} in {configFile}");
                 }
             }
         }
 
+        /// <summary>
+        /// Get the bundles from BundlerMinifierCore.
+        /// </summary>
+        /// <param name="configFile"></param>
+        /// <param name="bundlePath"></param>
+        /// <returns></returns>
         //Some of this taken from
         //https://gist.github.com/mohamedmansour/cd50123f8575daba7a7f12847b12da5d
 
-        private Bundle GetBundle(string configFile, string bundlePath)
+        private BundlerMinifierCoreBundle GetBundlerMinifierCore(string configFile, string bundlePath)
         {
             var file = new FileInfo(configFile);
             if (!file.Exists)
@@ -127,19 +169,46 @@ namespace HtmlRapier.TagHelpers
                 bundlePath = bundlePath.Substring(1);
             }
 
-            var bundles = JsonConvert.DeserializeObject<IEnumerable<Bundle>>(File.ReadAllText(configFile));
+            var bundles = JsonConvert.DeserializeObject<IEnumerable<BundlerMinifierCoreBundle>>(File.ReadAllText(configFile));
             return (from b in bundles
                     where b.OutputFileName.EndsWith(bundlePath, StringComparison.InvariantCultureIgnoreCase)
                     select b).FirstOrDefault();
         }
 
-        class Bundle
+        /// <summary>
+        /// Get the bundles from artifacts.json
+        /// </summary>
+        /// <param name="configFile"></param>
+        /// <param name="bundlePath"></param>
+        /// <returns></returns>
+        private ArtifactsJsonBundleOptions GetArtifactsBundle(string configFile, string bundlePath)
         {
-            [JsonProperty("outputFileName")]
-            public string OutputFileName { get; set; }
+            var file = new FileInfo(configFile);
+            if (!file.Exists)
+            {
+                throw new FileNotFoundException($"Cannot find bundle bundle config file {configFile}");
+            }
 
-            [JsonProperty("inputFiles")]
-            public List<string> InputFiles { get; set; } = new List<string>();
+            //Strip leading ~/
+            if (bundlePath[0] == '~' && (bundlePath[1] == '/' || bundlePath[1] == '\\'))
+            {
+                bundlePath = bundlePath.Substring(2);
+            }
+
+            var bundles = JsonConvert.DeserializeObject<IEnumerable<ArtifactsJsonBundle>>(File.ReadAllText(configFile));
+
+            foreach(var bundle in bundles.Where(i => i.bundle != null))
+            {
+                foreach(var options in bundle.bundle)
+                {
+                    if (options.Out?.EndsWith(bundlePath) == true)
+                    {
+                        return options;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
