@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>8.1.1</Version>
+    <Version>8.2.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>True</IncludeSymbols>
     <IncludeSource>True</IncludeSource>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
     <Authors>Andrew Piper</Authors>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageReleaseNotes>Added support for reading bundles out of artifacts.json for asset-bundle-src tag helper.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added a generic page-runner tag helper.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
