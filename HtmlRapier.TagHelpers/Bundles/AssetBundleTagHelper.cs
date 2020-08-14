@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc.TagHelpers.Internal;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
@@ -14,6 +13,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+//Fix deprecation warning by redefining type based on current target
+#if NETCOREAPP3_1
+using IHostEnvironmentType = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
+#endif
+#if NETSTANDARD2_0
+using IHostEnvironmentType = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+#endif
+
 namespace HtmlRapier.TagHelpers
 {
     public class AssetBundleTagHelper : TagHelper
@@ -21,20 +28,18 @@ namespace HtmlRapier.TagHelpers
         private const String jsFormat = "<script src='{0}' type='text/javascript'></script>";
         private const String cssFormat = "<link rel='stylesheet' href='{0}' />";
 
-        private IHostingEnvironment hostingEnvironment;
+        private IHostEnvironmentType hostingEnvironment;
         private IUrlHelperFactory urlHelperFactory;
         private ViewContext viewContext;
         private IUrlHelper urlHelper;
         private AssetBundleOptions options;
         private IFileVersionProvider fileVersionProvider;
-        private IMemoryCache cache;
 
-        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IHostingEnvironment hostingEnvironment, AssetBundleOptions options, IMemoryCache cache, IFileVersionProvider fileVersionProvider)
+        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IHostEnvironmentType hostingEnvironment, AssetBundleOptions options, IFileVersionProvider fileVersionProvider)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.urlHelperFactory = urlHelperFactory;
             this.options = options;
-            this.cache = cache;
             this.fileVersionProvider = fileVersionProvider;
         }
 
