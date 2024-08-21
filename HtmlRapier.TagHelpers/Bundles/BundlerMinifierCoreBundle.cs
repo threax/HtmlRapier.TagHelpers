@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace HtmlRapier.TagHelpers
 {
     class BundlerMinifierCoreBundle
     {
-        [JsonProperty("outputFileName")]
+        [JsonPropertyName("outputFileName")]
         public string OutputFileName { get; set; }
 
-        [JsonProperty("inputFiles")]
+        [JsonPropertyName("inputFiles")]
         public List<string> InputFiles { get; set; } = new List<string>();
     }
 }

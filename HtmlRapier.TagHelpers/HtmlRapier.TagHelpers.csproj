@@ -1,29 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
-    <Version>8.3.0-pre01</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>True</IncludeSymbols>
-    <IncludeSource>True</IncludeSource>
-    <PackageProjectUrl>https://github.com/threax/HtmlRapier.TagHelpers</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
-    <Authors>Andrew Piper</Authors>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageReleaseNotes>Added a generic page-runner tag helper.</PackageReleaseNotes>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<Version>9.0.0-pre01</Version>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSymbols>True</IncludeSymbols>
+		<IncludeSource>True</IncludeSource>
+		<PackageProjectUrl>https://github.com/threax/HtmlRapier.TagHelpers</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/threax/HtmlRapier.TagHelpers</RepositoryUrl>
+		<Authors>Andrew Piper</Authors>
+		<PackageLicenseUrl></PackageLicenseUrl>
+		<PackageReleaseNotes>Added a generic page-runner tag helper.</PackageReleaseNotes>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-  
 </Project>

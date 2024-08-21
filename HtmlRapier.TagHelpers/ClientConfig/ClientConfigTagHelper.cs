@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 namespace HtmlRapier.TagHelpers
 {
@@ -46,7 +46,7 @@ namespace HtmlRapier.TagHelpers
             output.Attributes.Add("type", "text/javascript");
 
             //Add the access token path in after getting its content url
-            var jObj = JObject.FromObject(config);
+            var jObj = JsonSerializer.Deserialize<Dictionary<String, Object>>(JsonSerializer.Serialize(config, config.GetType()));
 
             //Add the action path as the page base path
             var actionInfo = ViewContext.ActionDescriptor as ControllerActionDescriptor;
@@ -68,7 +68,7 @@ namespace HtmlRapier.TagHelpers
                     Values = valueDictionary
                 };
 
-                jObj.Add("PageBasePath", urlHelper.Action(urlActionContext));
+                jObj["PageBasePath"] = urlHelper.Action(urlActionContext);
             }
 
             var request = ViewContext.HttpContext.Request;
@@ -97,7 +97,7 @@ namespace HtmlRapier.TagHelpers
             }
 
             //Convert to html this way so we don't escape the settings object.
-            var html = String.Format(content, jObj.ToString());
+            var html = String.Format(content, JsonSerializer.Serialize(jObj));
             output.Content.SetHtmlContent(html);
         }
 

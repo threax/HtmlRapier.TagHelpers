@@ -6,20 +6,12 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-
-//Fix deprecation warning by redefining type based on current target
-#if NETCOREAPP3_1
-using IHostEnvironmentType = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
-#endif
-#if NETSTANDARD2_0
-using IHostEnvironmentType = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-#endif
+using System.Text.Json;
 
 namespace HtmlRapier.TagHelpers
 {
@@ -28,14 +20,14 @@ namespace HtmlRapier.TagHelpers
         private const String jsFormat = "<script src='{0}' type='text/javascript'></script>";
         private const String cssFormat = "<link rel='stylesheet' href='{0}' />";
 
-        private IHostEnvironmentType hostingEnvironment;
+        private IWebHostEnvironment hostingEnvironment;
         private IUrlHelperFactory urlHelperFactory;
         private ViewContext viewContext;
         private IUrlHelper urlHelper;
         private AssetBundleOptions options;
         private IFileVersionProvider fileVersionProvider;
 
-        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IHostEnvironmentType hostingEnvironment, AssetBundleOptions options, IFileVersionProvider fileVersionProvider)
+        public AssetBundleTagHelper(IUrlHelperFactory urlHelperFactory, IWebHostEnvironment hostingEnvironment, AssetBundleOptions options, IFileVersionProvider fileVersionProvider)
         {
             this.hostingEnvironment = hostingEnvironment;
             this.urlHelperFactory = urlHelperFactory;
@@ -165,7 +157,7 @@ namespace HtmlRapier.TagHelpers
             var file = new FileInfo(configFile);
             if (!file.Exists)
             {
-                throw new FileNotFoundException($"Cannot find bundle bundle config file {configFile}");
+                throw new FileNotFoundException($"Cannot find bundle config file {configFile}");
             }
 
             //Strip leading ~
@@ -174,7 +166,7 @@ namespace HtmlRapier.TagHelpers
                 bundlePath = bundlePath.Substring(1);
             }
 
-            var bundles = JsonConvert.DeserializeObject<IEnumerable<BundlerMinifierCoreBundle>>(File.ReadAllText(configFile));
+            var bundles = JsonSerializer.Deserialize<IEnumerable<BundlerMinifierCoreBundle>>(File.ReadAllText(configFile));
             return (from b in bundles
                     where b.OutputFileName.EndsWith(bundlePath, StringComparison.InvariantCultureIgnoreCase)
                     select b).FirstOrDefault();
@@ -200,7 +192,7 @@ namespace HtmlRapier.TagHelpers
                 bundlePath = bundlePath.Substring(2);
             }
 
-            var bundles = JsonConvert.DeserializeObject<IEnumerable<ArtifactsJsonBundle>>(File.ReadAllText(configFile));
+            var bundles = JsonSerializer.Deserialize<IEnumerable<ArtifactsJsonBundle>>(File.ReadAllText(configFile));
 
             foreach(var bundle in bundles.Where(i => i.bundle != null))
             {
