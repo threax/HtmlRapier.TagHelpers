@@ -7,7 +7,8 @@ namespace HtmlRapier.TagHelpers
     public enum FrontEndLibrary
     {
         Bootstrap3,
-        Bootstrap4
+        Bootstrap4,
+        Bootstrap5
     }
 
     /// <summary>

@@ -34,6 +34,11 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
                     services.TryAddTransient<IModal, ModalBootstrap4>();
                     services.TryAddTransient<IRelogin, ReloginBootstrap4>();
                     break;
+                case FrontEndLibrary.Bootstrap5:
+                    services.TryAddTransient<IPageNumbers, PageNumbersBootstrap5>();
+                    services.TryAddTransient<IModal, ModalBootstrap5>();
+                    services.TryAddTransient<IRelogin, ReloginBootstrap5>();
+                    break;
             }
 
             return services;
